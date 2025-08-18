@@ -24,7 +24,7 @@ const LoginForm = (props: Props) => {
             
             <Form.Label htmlFor='inputPasswordHelpBlock'>Password</Form.Label>
             <Form.Control
-                type="text"
+                type="password"
                 id="inputPasssord"
                 value={props.password}
                 onChange={evt => handleChange && handleChange(props.username, evt.target.value)}
