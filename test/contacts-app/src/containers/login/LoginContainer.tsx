@@ -33,6 +33,10 @@ const LoginContainer = (props: Props) => {
             <Row>
             <Button className="float-right" variant="secondary">Cancel</Button>
             <Button className="pull-right" variant="primary">Login</Button>
+            <hr />
+            <h1>
+                ENV: {`${import.meta.env.VITE_API_BASE_SCHEMA}:${import.meta.env.VITE_API_BASE_URL}`}
+            </h1>
             </Row>
         </>
     )
