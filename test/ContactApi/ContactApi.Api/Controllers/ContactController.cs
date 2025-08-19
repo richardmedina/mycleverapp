@@ -1,11 +1,13 @@
 using ContactApi.Contract.Contact;
 using ContactApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactApi.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class ContactController : ControllerBase
 {
     private readonly IContactService _contactService;

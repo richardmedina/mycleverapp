@@ -1,0 +1,1 @@
+public record AuthenticateResponse(string Token, DateTime ExpiresAtUtc);
