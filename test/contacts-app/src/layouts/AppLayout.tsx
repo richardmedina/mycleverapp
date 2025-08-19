@@ -4,6 +4,7 @@ import { Container, Button } from 'react-bootstrap';
 import MainToolbar from './parts/MainToolbar';
 import CustomModal from '../components/custom-modal/CustomModal';
 import LoginContainer from '../containers/login/LoginContainer';
+import AppRoutes from '../routes/AppRoutes';
 
 type Props = {
     title?: string;
@@ -25,7 +26,8 @@ export default function AppLayout (props : PropsWithChildren<Props>) {
         <>
             <MainToolbar />
             <Container >
-                <Button onClick={handleShowCustomModal}>ShowModal</Button>
+                <AppRoutes />
+                {/* <Button onClick={handleShowCustomModal}>ShowModal</Button>
                 <div>Hola Mundo: {props.title}</div>
 
                 <LoginContainer />
@@ -50,8 +52,8 @@ export default function AppLayout (props : PropsWithChildren<Props>) {
                     ]}
                 >
                     <h1>Hello</h1>
-                </CustomModal>
-                <>{props.children}</>
+                </CustomModal> */}
+                {/* <>{props.children}</> */}
             </Container>
         </>
     );

@@ -7,11 +7,12 @@ type AuthResponse = {
 };
 
 export async function login(username: string, password: string) {
+  console.log("Logging In:", username, password);
   const { data } = await HttpClient.post<AuthResponse>("/auth/authenticate", {
     username,
     password,
   });
-
+  console.log("Logged In:", data);
   // Guardamos el token en localStorage
   localStorage.setItem("auth_token", data.token);
 
