@@ -42,7 +42,7 @@ namespace ContactApi.Api
                 new(JwtRegisteredClaimNames.Sub, request.Username),
                 new(JwtRegisteredClaimNames.UniqueName, request.Username),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(ClaimTypes.Name, request.Username),
+                new(ClaimTypes.Name, $"{request.Username} -- LastName"),
                 new(ClaimTypes.Role, role) // opcional: role
             };
 
