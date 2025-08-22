@@ -50,4 +50,14 @@ public class ContactController : ControllerBase
             ? Ok()
             : NotFound();
     }
+
+    [HttpDelete("{id:long}")]
+    public IActionResult Delete(int id)
+    {
+        bool result = _contactService.Delete(id);
+
+        return result
+            ? Ok()
+            : NotFound();
+    }
 }
