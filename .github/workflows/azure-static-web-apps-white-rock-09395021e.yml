@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write   # <- necesario para OIDC
+      id-token: write   # <- necesario para obtener el OIDC token
 
     steps:
       - uses: actions/checkout@v4
@@ -32,21 +32,20 @@ jobs:
         run: npm run build
         working-directory: test/contacts-app
 
-      # Obtener ID Token OIDC (requerido por el action en modo GitHub)
+      # OBTENER ID TOKEN OIDC (sin require de '@actions/core')
       - name: Get GitHub OIDC ID token
         id: oidc
         uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
-            const core = require('@actions/core');
             const idtoken = await core.getIDToken();
-            core.setOutput('token', idtoken);
+            return idtoken; // queda en steps.oidc.outputs.result
 
       - name: Deploy to Azure Static Web Apps (OIDC)
         uses: Azure/static-web-apps-deploy@v1
         with:
-          # NO usar azure_static_web_apps_api_token en modo GitHub
-          github_id_token: ${{ steps.oidc.outputs.token }}
+          github_id_token: ${{ steps.oidc.outputs.result }}
           action: "upload"
           app_location: "test/contacts-app"
           output_location: "dist"
@@ -64,13 +63,13 @@ jobs:
         id: oidc
         uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
-            const core = require('@actions/core');
             const idtoken = await core.getIDToken();
-            core.setOutput('token', idtoken);
+            return idtoken;
 
       - name: Close PR Preview Environments
         uses: Azure/static-web-apps-deploy@v1
         with:
-          github_id_token: ${{ steps.oidc.outputs.token }}
+          github_id_token: ${{ steps.oidc.outputs.result }}
           action: "close"
