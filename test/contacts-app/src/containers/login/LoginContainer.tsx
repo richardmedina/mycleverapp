@@ -60,7 +60,7 @@ const LoginContainer = (props: Props) => {
                 </Col>
             
             <h1>
-                ENV: {`${import.meta.env.VITE_API_BASE_SCHEMA}:${import.meta.env.VITE_API_BASE_URL}`}
+                ENV: {`${import.meta.env.VITE_API_BASE_URL}`}
             </h1>
             </Row>
         </>
