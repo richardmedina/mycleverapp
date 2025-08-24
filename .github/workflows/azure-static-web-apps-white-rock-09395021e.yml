@@ -2,17 +2,15 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build_and_deploy_job:
+  build_and_deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout
@@ -22,32 +20,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: test/contacts-app/package-lock.json
 
-      # Construye tu app React
-      - name: Install & Build (React)
-        working-directory: ./test/contacts-app
-        run: |
-          npm ci
-          npm run build
+      - name: Install deps
+        run: npm ci
+        working-directory: test/contacts-app
 
-      # Sube a Azure Static Web Apps usando el token de despliegue
-      - name: Build And Deploy
-        uses: Azure/static-web-apps-deploy@v2
+      - name: Build (Vite)
+        run: npm run build
+        working-directory: test/contacts-app
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}  # <-- crea este secret con el Deployment Token de TU SWA
-          action: "upload"
-          app_location: "./test/contacts-app"
-          # IMPORTANTE: elige UNA de las dos siguientes líneas según tu builder:
-          # output_location: "build"     # React CRA
-          output_location: "dist"        # Vite (comenta la otra)
-          skip_app_build: true           # ya construimos arriba
+          # Secreto en GitHub con tu Deployment Token del portal de Azure:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          # Carpeta del proyecto (donde está package.json)
+          app_location: "test/contacts-app"
+          # Si no usas Azure Functions, déjalo vacío
+          api_location: ""
+          # Carpeta de salida de Vite
+          output_location: "dist"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
-      - name: Close Pull Request
-        uses: Azure/static-web-apps-deploy@v2
+      - name: Close PR Preview Environments
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          action: "close"
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"
