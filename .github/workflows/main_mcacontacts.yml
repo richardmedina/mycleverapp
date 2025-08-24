@@ -25,7 +25,10 @@ jobs:
       - name: Build solution (Release)
         run: dotnet build "./test/ContactApi/ContactApi.sln" --configuration Release --no-restore
 
-      # Publica SOLO el proyecto WebAPI
+      - name: Test solution (opcional)
+        run: dotnet test "./test/ContactApi/ContactApi.sln" --configuration Release --no-build
+
+      # Publica únicamente el proyecto WebAPI
       - name: Publish WebAPI project
         run: dotnet publish "./test/ContactApi/ContactApi.Api/ContactApi.Api.csproj" -c Release -o "${{ env.DOTNET_ROOT }}/myapp" --no-build
 
