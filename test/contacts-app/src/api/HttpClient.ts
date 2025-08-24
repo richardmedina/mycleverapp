@@ -1,7 +1,9 @@
 import axios from "axios";
 
+var baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const api = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL
 });
 
 // Interceptor para añadir el token a cada request
