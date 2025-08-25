@@ -50,6 +50,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthentication();
 
+builder.Services.AddApplicationInsightsTelemetry(); // lee ConnectionString o InstrumentationKey
+builder.Services.AddControllers();
+
+
 var app = builder.Build();
 
 app.UseSwagger();
